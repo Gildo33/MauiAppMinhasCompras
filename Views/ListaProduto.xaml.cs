@@ -73,6 +73,8 @@ namespace MauiAppMinhasCompras.Views
             {
                 DisplayAlert("Ops", ex.Message, "OK");
             }
+
+
         }
 
         private async void MenuItem_Clicked(object sender, EventArgs e)
@@ -112,5 +114,35 @@ private async void OnSearchTextChanged(object sender, TextChangedEventArgs e)
             lst_produtos.ItemsSource = listaFiltrada;
         }
     }
-}
+        private async void pck_filtro_categoria_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string categoriaSelecionada = pck_filtro_categoria.SelectedItem?.ToString();
+
+                lista.Clear();
+
+                List<Produto> tmp = await App.Db.GetAll();
+
+                if (categoriaSelecionada != "Todas" && !string.IsNullOrEmpty(categoriaSelecionada))
+                {
+                    // Filtra apenas os produtos da categoria selecionada
+                    tmp = tmp.Where(i => i.Categoria == categoriaSelecionada).ToList();
+                }
+
+                // Adiciona na ObservableCollection para atualizar a interface
+                tmp.ForEach(i => lista.Add(i));
+
+                // Exibe o relatório de total gasto na categoria filtrada
+                double totalCategoria = tmp.Sum(i => i.Quantidade * i.Preco);
+                await DisplayAlert("Relatório por Categoria",
+                    $"Total gasto em {categoriaSelecionada}: {totalCategoria:C}", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Ops", ex.Message, "OK");
+            }
+        }
+    }
+
 }

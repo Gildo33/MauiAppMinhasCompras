@@ -12,8 +12,21 @@
         <SearchBar x:Name="txt_search" 
            Placeholder="Buscar Produto..." 
            TextChanged="OnSearchTextChanged" />
-         
-        
+
+        <Label Text="Filtrar por Categoria:" FontSize="14" FontAttributes="Bold" />
+        <Picker x:Name="pck_filtro_categoria" 
+        Title="Todas as Categorias" 
+        SelectedIndexChanged="pck_filtro_categoria_SelectedIndexChanged">
+            <Picker.Items>
+                <x:String>Todas</x:String>
+                <x:String>Alimentos</x:String>
+                <x:String>Higiene</x:String>
+                <x:String>Limpeza</x:String>
+                <x:String>Outros</x:String>
+            </Picker.Items>
+        </Picker>
+
+
         <ListView x:Name="lst_produtos" ItemSelected="lst_produtos_ItemSelected">
             
             <ListView.ItemTemplate>
@@ -25,6 +38,7 @@
                         <StackLayout Padding="10" Orientation="Horizontal">
                             <Label Text="{Binding Descricao}" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
                             <Label Text="{Binding Total, StringFormat='{0:C}'}" HorizontalOptions="End" VerticalOptions="Center" />
+                            <Label Text="{Binding Categoria}" FontSize="14" TextColor="Gray" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
